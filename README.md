@@ -60,6 +60,7 @@ Django ORM es compatible con varios motores de base de datos. En este curso, uti
 para inicializar las tablas de la BD de DJango debemos utilizar
 ./manage.py migrate
 ./manage.py makemigrations
+- // makemigrations nos permite estruturar el ORM para luego se aplique con migrate en la BD
 - //si no definimos el id, este sera creado por DJango a través de DJango
 - por ultimo debemos volver a colocar el comando
 ./manage.py migrate
@@ -74,3 +75,53 @@ https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 ## para verificar la DB
 debemos colocar
 ./manage.py dbshell
+
+## Apuntes manejo de la BD
+¿Cómo se agrega un nuevo campo a una tabla en Django?
+Para agregar un nuevo campo a una tabla existente, necesitas modificar la clase del modelo correspondiente. Por ejemplo, si deseas añadir el campo “año” a la clase Carro, lo haces así:
+
+Añade el campo como un TextField con un MaxLength de 4, ya que solo necesitas almacenar valores como 2022, 2023, etc.
+class Carro(models.Model):
+    ...
+    año = models.TextField(max_length=4, null=True)
+¿Qué pasos se siguen después de modificar el modelo?
+Después de agregar el nuevo campo al modelo, sigue estos pasos:
+
+Guardar los cambios en el archivo del modelo: No olvides guardar el archivo después de realizar modificaciones.
+Crear nuevas migraciones: Ejecuta el comando python manage.py makemigrations. Si no detecta cambios, verifica si guardaste el archivo.
+Aplicar las migraciones: Ejecuta python manage.py migrate. Este comando actualiza la base de datos con la nueva estructura.
+¿Cómo se soluciona el error de campo no nulo?
+Si intentas crear un campo no nulo en una tabla que ya contiene datos, Django te pedirá resolver cómo manejar los registros existentes. Puedes:
+
+Proveer un valor por defecto.
+Permitir valores nulos.
+En este ejemplo, se permite que el campo “año” sea nulo (null=True), para evitar problemas con registros anteriores.
+
+¿Cómo se utiliza el ORM de Django para interactuar con los datos?
+Una vez aplicado el nuevo campo, puedes usar el ORM de Django para interactuar con la base de datos. Usamos el comando python manage.py shell para acceder al shell interactivo de Django.
+
+Ejemplo de cómo crear un nuevo registro:
+Importar el modelo:
+from my_first_app.models import Carro
+Crear una instancia de Carro:
+nuevo_carro = Carro(titulo='BMW', año='2023')
+Guardar la instancia en la base de datos:
+nuevo_carro.save()
+¿Cómo mejorar la visualización de los objetos en el shell?
+Define el método __str__ en tu modelo para que la representación textual del objeto sea más clara:
+
+class Carro(models.Model):
+    ...
+    def __str__(self):
+        return f"{self.titulo} - {self.año}"
+¿Cómo agregar un nuevo atributo y practicar?
+Añadir un nuevo atributo, como el color del carro, sigue los mismos pasos:
+
+Modifica la clase del modelo para incluir el nuevo campo.
+Guarda el archivo.
+Ejecuta los comandos makemigrations y migrate.
+Utiliza el shell para crear y guardar nuevos registros con el atributo color.
+
+# shell en DJango
+./manage.py shell
+- desde esta interfaz podremos ejecutar instrucciones para django como si estuviera corriendo el proyecto
