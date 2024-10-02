@@ -124,6 +124,28 @@ Guarda el archivo.
 Ejecuta los comandos makemigrations y migrate.
 Utiliza el shell para crear y guardar nuevos registros con el atributo color.
 
+## Conectar Postgres
+
+para esto solo tendremos que modificar de la siguiente manera:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str('DJANGO_DB_NAME'),
+    }
+    #'default': env.db('DJANGO_DB_URL') esta es otra forma de enviar los datos de la base de datos
+}
+
+debemos recordar crear el archivo .env para almacenar las variables de entorno que no se enviaran al repositorio
+
+para ocultar las credenciales de acceso a la DB necesitaremos importar
+import environ
+
+luego tendremos que agregar:
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+con esto referenciaremos a las variables de entorno
+
 # shell en DJango
 ./manage.py shell
 - desde esta interfaz podremos ejecutar instrucciones para django como si estuviera corriendo el proyecto
@@ -189,3 +211,55 @@ Para reutilizar este contenido:
     <!-- contenido específico -->
 {% endblock %}
 
+# Apuntes Proyecto
+{% comment "" %}
+        <form class="mt-4">
+        <button
+          class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
+        >
+          Add to Cart
+        </button>
+      </form>
+{% endcomment %}
+      
+Este bloque nos permite comentar codigo para que DJango no lo ejecute
+
+## TailWind
+ https://www.hyperui.dev/components/marketing/product-cards
+ https://tailwindcss.com/docs/container
+
+ - otros:
+ https://flowbite.com/
+ 
+- para una mejor manejo podemos utilizar
+Crispy Form Tailwind: https://github.com/django-crispy-forms/crispy-tailwind
+
+# Admin de DJango
+crear una cuenta de administrador
+./manage.py createsuperuser
+
+para agregar elementos al admin debemos modificar el archivo admin.py de la aplicacion
+
+## En caso de que necesitemos consultar rutas estaticas de los archivos almacenados debemos utilizar:
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('products/', include('products.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Unit Testing en DJango
+Django tiene sus propios elementos para hacer pruebas y se pueden crear a través de los archivos tests.py
+para ejecutar una prueba utilizamos el comando:
+./manage.py test
+este comando crear una base de datos de prueba temporal en donde ejecuta los Unit Test
+
+## black
+este nos permite formatear el codigo para manejar una sintaxis unica en todo el proyecto
+- instalamos con
+pip install black
+- ejecutamos con:
+black .
+
+solo se utiliza para el entorno de desarrollo

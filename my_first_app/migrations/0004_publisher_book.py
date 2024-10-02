@@ -7,25 +7,47 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('my_first_app', '0003_car_color'),
+        ("my_first_app", "0003_car_color"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Publisher',
+            name="Publisher",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.TextField(max_length=200)),
-                ('address', models.TextField(max_length=200, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.TextField(max_length=200)),
+                ("address", models.TextField(max_length=200, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Book',
+            name="Book",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.TextField(max_length=200)),
-                ('publication_date', models.DateField()),
-                ('Publisher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='my_first_app.publisher')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.TextField(max_length=200)),
+                ("publication_date", models.DateField()),
+                (
+                    "Publisher",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="my_first_app.publisher",
+                    ),
+                ),
             ],
         ),
     ]
